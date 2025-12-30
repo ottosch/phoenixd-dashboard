@@ -106,7 +106,7 @@ echo ""
 echo "Dashboard URL: http://localhost:3000"
 echo ""
 echo "Services status:"
-docker compose ps --format "table {{.Name}}\t{{.Status}}"
+docker compose ps
 echo ""
 echo -e "${YELLOW}Note: The phoenixd password has been saved to .env${NC}"
 echo -e "${YELLOW}Do not commit this file to version control!${NC}"
