@@ -10,30 +10,32 @@ import {
   Activity,
   Loader2,
 } from 'lucide-react';
-import { listChannels, closeChannel, type Channel } from '@/lib/api';
-import { formatSats, cn } from '@/lib/utils';
+import { listChannels, closeChannel, getNodeInfo, type Channel } from '@/lib/api';
+import { formatSats, cn, getMempoolUrl } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
 
 export default function ChannelsPage() {
   const [channels, setChannels] = useState<Channel[]>([]);
   const [loading, setLoading] = useState(true);
   const [closingChannel, setClosingChannel] = useState<string | null>(null);
+  const [chain, setChain] = useState<string>('mainnet');
   const { toast } = useToast();
 
   useEffect(() => {
-    const fetchChannels = async () => {
+    const fetchData = async () => {
       try {
-        const data = await listChannels();
-        setChannels(data || []);
+        const [channelsData, nodeInfo] = await Promise.all([listChannels(), getNodeInfo()]);
+        setChannels(channelsData || []);
+        setChain(nodeInfo.chain || 'mainnet');
       } catch (error) {
-        console.error('Failed to fetch channels:', error);
+        console.error('Failed to fetch data:', error);
         toast({ variant: 'destructive', title: 'Error', description: 'Failed to load channels' });
       } finally {
         setLoading(false);
       }
     };
 
-    fetchChannels();
+    fetchData();
   }, [toast]);
 
   const handleCloseChannel = async (channelId: string) => {
@@ -204,9 +206,7 @@ export default function ChannelsPage() {
                 {/* Actions */}
                 <div className="flex gap-3">
                   <button
-                    onClick={() =>
-                      window.open(`https://mempool.space/tx/${channel.fundingTxId}`, '_blank')
-                    }
+                    onClick={() => window.open(getMempoolUrl(chain, channel.fundingTxId), '_blank')}
                     className="glass-button flex-1 flex items-center justify-center gap-2"
                   >
                     <ExternalLink className="h-4 w-4" />

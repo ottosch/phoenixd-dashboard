@@ -24,10 +24,11 @@ import {
   getIncomingPayments,
   getOutgoingPayments,
   exportPayments,
+  getNodeInfo,
   type IncomingPayment,
   type OutgoingPayment,
 } from '@/lib/api';
-import { formatSats, cn } from '@/lib/utils';
+import { formatSats, cn, getMempoolUrl } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
 import { PageTabs, type TabItem } from '@/components/ui/page-tabs';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
@@ -42,26 +43,29 @@ export default function PaymentsPage() {
   const [exporting, setExporting] = useState(false);
   const [selectedPayment, setSelectedPayment] = useState<Payment | null>(null);
   const [copiedField, setCopiedField] = useState<string | null>(null);
+  const [chain, setChain] = useState<string>('mainnet');
   const { toast } = useToast();
 
   useEffect(() => {
-    const fetchPayments = async () => {
+    const fetchData = async () => {
       try {
-        const [incoming, outgoing] = await Promise.all([
+        const [incoming, outgoing, nodeInfo] = await Promise.all([
           getIncomingPayments({ limit: 50 }),
           getOutgoingPayments({ limit: 50 }),
+          getNodeInfo(),
         ]);
         setIncomingPayments(incoming || []);
         setOutgoingPayments(outgoing || []);
+        setChain(nodeInfo.chain || 'mainnet');
       } catch (error) {
-        console.error('Failed to fetch payments:', error);
+        console.error('Failed to fetch data:', error);
         toast({ variant: 'destructive', title: 'Error', description: 'Failed to load payments' });
       } finally {
         setLoading(false);
       }
     };
 
-    fetchPayments();
+    fetchData();
   }, [toast]);
 
   const handleExport = async () => {
@@ -551,7 +555,7 @@ export default function PaymentsPage() {
                     fullValue={selectedPayment.txId}
                     onCopy={() => copyToClipboard(selectedPayment.txId!, 'txid')}
                     copied={copiedField === 'txid'}
-                    link={`https://mempool.space/tx/${selectedPayment.txId}`}
+                    link={getMempoolUrl(chain, selectedPayment.txId)}
                   />
                 )}
               </div>

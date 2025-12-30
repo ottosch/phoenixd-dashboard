@@ -32,3 +32,14 @@ export function truncateMiddle(str: string, startChars = 8, endChars = 8): strin
 export function copyToClipboard(text: string): Promise<void> {
   return navigator.clipboard.writeText(text);
 }
+
+export function getMempoolUrl(chain: string, txId?: string): string {
+  const isTestnet = chain !== 'mainnet';
+  const baseUrl = isTestnet ? 'https://mempool.space/testnet4' : 'https://mempool.space';
+
+  if (txId) {
+    return `${baseUrl}/tx/${txId}`;
+  }
+
+  return baseUrl;
+}

@@ -18,7 +18,7 @@ import {
 } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { getNodeInfo } from '@/lib/api';
-import { cn } from '@/lib/utils';
+import { cn, getMempoolUrl } from '@/lib/utils';
 
 interface SettingsDialogProps {
   open: boolean;
@@ -88,7 +88,7 @@ export function SettingsDialog({ open, onOpenChange }: SettingsDialogProps) {
     {
       title: 'Mempool Explorer',
       description: 'View blockchain transactions',
-      href: 'https://mempool.space',
+      href: getMempoolUrl(nodeInfo?.chain || 'mainnet'),
       icon: ExternalLink,
     },
   ];
