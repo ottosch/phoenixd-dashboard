@@ -6,11 +6,11 @@ describe('WebSocket Utilities', () => {
   describe('broadcastPayment', () => {
     it('should broadcast to all connected clients', () => {
       const clients = new Set<{ readyState: number; send: ReturnType<typeof vi.fn> }>();
-      
+
       const client1 = { readyState: WebSocket.OPEN, send: vi.fn() };
       const client2 = { readyState: WebSocket.OPEN, send: vi.fn() };
       const client3 = { readyState: WebSocket.CLOSED, send: vi.fn() };
-      
+
       clients.add(client1);
       clients.add(client2);
       clients.add(client3);
@@ -67,7 +67,7 @@ describe('WebSocket Utilities', () => {
   describe('WebSocket Connection Management', () => {
     it('should track connected clients', () => {
       const clients = new Set<object>();
-      
+
       const ws1 = { id: 1 };
       const ws2 = { id: 2 };
 
@@ -141,7 +141,7 @@ describe('WebSocket Utilities', () => {
 
     it('should handle events with missing fields', () => {
       const incompleteEvent = { type: 'payment_received' };
-      
+
       const amountSat = (incompleteEvent as { amountSat?: number }).amountSat || 0;
       const paymentHash = (incompleteEvent as { paymentHash?: string }).paymentHash || 'unknown';
 
@@ -171,7 +171,7 @@ describe('WebSocket Utilities', () => {
 
       expect(authHeader).toMatch(/^Basic /);
       expect(authHeader).not.toContain(password);
-      
+
       // Verify we can decode it
       const decoded = Buffer.from(authHeader.replace('Basic ', ''), 'base64').toString();
       expect(decoded).toBe(':testpassword');

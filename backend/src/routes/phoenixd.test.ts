@@ -51,14 +51,12 @@ describe('Phoenixd Routes', () => {
 
       mockPhoenixd.createInvoice.mockResolvedValueOnce(mockInvoice);
 
-      const response = await request(app)
-        .post('/api/phoenixd/createinvoice')
-        .send({
-          description: 'Test payment',
-          amountSat: '5000',
-          expirySeconds: '3600',
-          externalId: 'ext-1',
-        });
+      const response = await request(app).post('/api/phoenixd/createinvoice').send({
+        description: 'Test payment',
+        amountSat: '5000',
+        expirySeconds: '3600',
+        externalId: 'ext-1',
+      });
 
       expect(response.status).toBe(200);
       expect(response.body).toEqual(mockInvoice);
@@ -86,9 +84,7 @@ describe('Phoenixd Routes', () => {
         serialized: 'lnbc10u1...',
       });
 
-      await request(app)
-        .post('/api/phoenixd/createinvoice')
-        .send({ amountSat: '1000' });
+      await request(app).post('/api/phoenixd/createinvoice').send({ amountSat: '1000' });
 
       expect(mockPhoenixd.createInvoice).toHaveBeenCalledWith(
         expect.objectContaining({
@@ -224,13 +220,11 @@ describe('Phoenixd Routes', () => {
 
       mockPhoenixd.payOffer.mockResolvedValueOnce(mockResult);
 
-      const response = await request(app)
-        .post('/api/phoenixd/payoffer')
-        .send({
-          offer: 'lno1...',
-          amountSat: '5000',
-          message: 'Great work!',
-        });
+      const response = await request(app).post('/api/phoenixd/payoffer').send({
+        offer: 'lno1...',
+        amountSat: '5000',
+        message: 'Great work!',
+      });
 
       expect(response.status).toBe(200);
       expect(mockPhoenixd.payOffer).toHaveBeenCalledWith({
@@ -253,13 +247,11 @@ describe('Phoenixd Routes', () => {
 
       mockPhoenixd.payLnAddress.mockResolvedValueOnce(mockResult);
 
-      const response = await request(app)
-        .post('/api/phoenixd/paylnaddress')
-        .send({
-          address: 'user@getalby.com',
-          amountSat: '1000',
-          message: 'Thanks!',
-        });
+      const response = await request(app).post('/api/phoenixd/paylnaddress').send({
+        address: 'user@getalby.com',
+        amountSat: '1000',
+        message: 'Thanks!',
+      });
 
       expect(response.status).toBe(200);
       expect(response.body).toEqual(mockResult);
@@ -280,13 +272,11 @@ describe('Phoenixd Routes', () => {
     it('should send on-chain payment', async () => {
       mockPhoenixd.sendToAddress.mockResolvedValueOnce('onchain-tx-id-123');
 
-      const response = await request(app)
-        .post('/api/phoenixd/sendtoaddress')
-        .send({
-          address: 'bc1qw508d6qejxtdg4y5r3zarvary0c5xw7kv8f3t4',
-          amountSat: '50000',
-          feerateSatByte: '10',
-        });
+      const response = await request(app).post('/api/phoenixd/sendtoaddress').send({
+        address: 'bc1qw508d6qejxtdg4y5r3zarvary0c5xw7kv8f3t4',
+        amountSat: '50000',
+        feerateSatByte: '10',
+      });
 
       expect(response.status).toBe(200);
       expect(response.body).toEqual({ txId: 'onchain-tx-id-123' });
@@ -295,13 +285,11 @@ describe('Phoenixd Routes', () => {
     it('should handle invalid bitcoin address', async () => {
       mockPhoenixd.sendToAddress.mockRejectedValueOnce(new Error('Invalid address'));
 
-      const response = await request(app)
-        .post('/api/phoenixd/sendtoaddress')
-        .send({
-          address: 'invalid-address',
-          amountSat: '50000',
-          feerateSatByte: '10',
-        });
+      const response = await request(app).post('/api/phoenixd/sendtoaddress').send({
+        address: 'invalid-address',
+        amountSat: '50000',
+        feerateSatByte: '10',
+      });
 
       expect(response.status).toBe(500);
     });
@@ -419,9 +407,7 @@ describe('Phoenixd Routes', () => {
     it('should export all payments when no dates specified', async () => {
       mockPhoenixd.exportCsv.mockResolvedValueOnce('all,data');
 
-      const response = await request(app)
-        .post('/api/phoenixd/export')
-        .send({});
+      const response = await request(app).post('/api/phoenixd/export').send({});
 
       expect(response.status).toBe(200);
       expect(mockPhoenixd.exportCsv).toHaveBeenCalledWith(undefined, undefined);

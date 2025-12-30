@@ -130,13 +130,11 @@ describe('Node Routes', () => {
     it('should close channel successfully', async () => {
       mockPhoenixd.closeChannel.mockResolvedValueOnce('close-tx-id');
 
-      const response = await request(app)
-        .post('/api/node/channels/close')
-        .send({
-          channelId: 'ch-1',
-          address: 'bc1q...',
-          feerateSatByte: '10',
-        });
+      const response = await request(app).post('/api/node/channels/close').send({
+        channelId: 'ch-1',
+        address: 'bc1q...',
+        feerateSatByte: '10',
+      });
 
       expect(response.status).toBe(200);
       expect(response.body).toEqual({ txId: 'close-tx-id' });
@@ -150,13 +148,11 @@ describe('Node Routes', () => {
     it('should handle invalid feerate', async () => {
       mockPhoenixd.closeChannel.mockRejectedValueOnce(new Error('Invalid feerate'));
 
-      const response = await request(app)
-        .post('/api/node/channels/close')
-        .send({
-          channelId: 'ch-1',
-          address: 'bc1q...',
-          feerateSatByte: 'invalid',
-        });
+      const response = await request(app).post('/api/node/channels/close').send({
+        channelId: 'ch-1',
+        address: 'bc1q...',
+        feerateSatByte: 'invalid',
+      });
 
       expect(response.status).toBe(500);
     });

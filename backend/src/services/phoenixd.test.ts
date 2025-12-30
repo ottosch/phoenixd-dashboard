@@ -241,7 +241,8 @@ describe('PhoenixdService', () => {
         mockFetch.mockResolvedValueOnce({
           ok: true,
           headers: { get: () => 'application/json' },
-          json: () => Promise.resolve({ amountSat: 0, paymentHash: 'a'.repeat(64), serialized: 'lnbc...' }),
+          json: () =>
+            Promise.resolve({ amountSat: 0, paymentHash: 'a'.repeat(64), serialized: 'lnbc...' }),
         });
 
         const result = await service.createInvoice({
@@ -426,7 +427,9 @@ describe('PhoenixdService', () => {
         });
 
         expect(mockFetch).toHaveBeenCalledWith(
-          expect.stringMatching(/from=1000.*to=2000.*limit=10.*offset=0.*all=true.*externalId=ext-1/),
+          expect.stringMatching(
+            /from=1000.*to=2000.*limit=10.*offset=0.*all=true.*externalId=ext-1/
+          ),
           expect.any(Object)
         );
       });
@@ -649,7 +652,9 @@ describe('PhoenixdService', () => {
         text: () => Promise.resolve('Not found'),
       });
 
-      await expect(service.getIncomingPayment('invalid')).rejects.toThrow('Phoenixd API error: 404');
+      await expect(service.getIncomingPayment('invalid')).rejects.toThrow(
+        'Phoenixd API error: 404'
+      );
     });
   });
 });
@@ -679,8 +684,7 @@ describe('Utility Functions', () => {
   });
 
   it('should validate lightning invoices prefix', () => {
-    const isValidInvoicePrefix = (invoice: string) =>
-      /^ln(bc|tb|bcrt)/i.test(invoice);
+    const isValidInvoicePrefix = (invoice: string) => /^ln(bc|tb|bcrt)/i.test(invoice);
 
     expect(isValidInvoicePrefix('lnbc1...')).toBe(true);
     expect(isValidInvoicePrefix('lntb1...')).toBe(true);
@@ -690,8 +694,7 @@ describe('Utility Functions', () => {
   });
 
   it('should validate bitcoin addresses', () => {
-    const isValidBitcoinAddress = (address: string) =>
-      /^(bc1|tb1|[13]|[mn2])/.test(address);
+    const isValidBitcoinAddress = (address: string) => /^(bc1|tb1|[13]|[mn2])/.test(address);
 
     expect(isValidBitcoinAddress('bc1qw508d6qejxtdg4y5r3zarvary0c5xw7kv8f3t4')).toBe(true);
     expect(isValidBitcoinAddress('1BvBMSEYstWetqTFn5Au4m4GFg7xJaNVN2')).toBe(true);

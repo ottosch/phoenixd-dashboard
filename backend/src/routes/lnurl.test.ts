@@ -45,21 +45,15 @@ describe('LNURL Routes', () => {
 
       mockPhoenixd.lnurlPay.mockResolvedValueOnce(mockResult);
 
-      const response = await request(app)
-        .post('/api/lnurl/pay')
-        .send({
-          lnurl: 'lnurl1dp68gurn8ghj7...',
-          amountSat: '1000',
-          message: 'Thanks!',
-        });
+      const response = await request(app).post('/api/lnurl/pay').send({
+        lnurl: 'lnurl1dp68gurn8ghj7...',
+        amountSat: '1000',
+        message: 'Thanks!',
+      });
 
       expect(response.status).toBe(200);
       expect(response.body).toEqual(mockResult);
-      expect(mockPhoenixd.lnurlPay).toHaveBeenCalledWith(
-        'lnurl1dp68gurn8ghj7...',
-        1000,
-        'Thanks!'
-      );
+      expect(mockPhoenixd.lnurlPay).toHaveBeenCalledWith('lnurl1dp68gurn8ghj7...', 1000, 'Thanks!');
     });
 
     it('should process LNURL pay without message', async () => {
@@ -71,12 +65,10 @@ describe('LNURL Routes', () => {
         paymentPreimage: 'd'.repeat(64),
       });
 
-      const response = await request(app)
-        .post('/api/lnurl/pay')
-        .send({
-          lnurl: 'lnurl1...',
-          amountSat: '500',
-        });
+      const response = await request(app).post('/api/lnurl/pay').send({
+        lnurl: 'lnurl1...',
+        amountSat: '500',
+      });
 
       expect(response.status).toBe(200);
       expect(mockPhoenixd.lnurlPay).toHaveBeenCalledWith('lnurl1...', 500, undefined);
@@ -85,12 +77,10 @@ describe('LNURL Routes', () => {
     it('should return 500 on LNURL pay error', async () => {
       mockPhoenixd.lnurlPay.mockRejectedValueOnce(new Error('Invalid LNURL'));
 
-      const response = await request(app)
-        .post('/api/lnurl/pay')
-        .send({
-          lnurl: 'invalid',
-          amountSat: '1000',
-        });
+      const response = await request(app).post('/api/lnurl/pay').send({
+        lnurl: 'invalid',
+        amountSat: '1000',
+      });
 
       expect(response.status).toBe(500);
       expect(response.body.error).toBe('Invalid LNURL');
@@ -99,12 +89,10 @@ describe('LNURL Routes', () => {
     it('should handle minimum amount not met', async () => {
       mockPhoenixd.lnurlPay.mockRejectedValueOnce(new Error('Amount below minimum'));
 
-      const response = await request(app)
-        .post('/api/lnurl/pay')
-        .send({
-          lnurl: 'lnurl1...',
-          amountSat: '1',
-        });
+      const response = await request(app).post('/api/lnurl/pay').send({
+        lnurl: 'lnurl1...',
+        amountSat: '1',
+      });
 
       expect(response.status).toBe(500);
       expect(response.body.error).toBe('Amount below minimum');
@@ -113,12 +101,10 @@ describe('LNURL Routes', () => {
     it('should handle maximum amount exceeded', async () => {
       mockPhoenixd.lnurlPay.mockRejectedValueOnce(new Error('Amount exceeds maximum'));
 
-      const response = await request(app)
-        .post('/api/lnurl/pay')
-        .send({
-          lnurl: 'lnurl1...',
-          amountSat: '999999999',
-        });
+      const response = await request(app).post('/api/lnurl/pay').send({
+        lnurl: 'lnurl1...',
+        amountSat: '999999999',
+      });
 
       expect(response.status).toBe(500);
       expect(response.body.error).toBe('Amount exceeds maximum');
@@ -150,9 +136,7 @@ describe('LNURL Routes', () => {
     it('should return 500 on invalid LNURL withdraw', async () => {
       mockPhoenixd.lnurlWithdraw.mockRejectedValueOnce(new Error('Invalid LNURL-withdraw'));
 
-      const response = await request(app)
-        .post('/api/lnurl/withdraw')
-        .send({ lnurl: 'invalid' });
+      const response = await request(app).post('/api/lnurl/withdraw').send({ lnurl: 'invalid' });
 
       expect(response.status).toBe(500);
       expect(response.body.error).toBe('Invalid LNURL-withdraw');
@@ -174,9 +158,7 @@ describe('LNURL Routes', () => {
     it('should process LNURL auth successfully', async () => {
       mockPhoenixd.lnurlAuth.mockResolvedValueOnce('OK');
 
-      const response = await request(app)
-        .post('/api/lnurl/auth')
-        .send({ lnurl: 'lnurl1auth...' });
+      const response = await request(app).post('/api/lnurl/auth').send({ lnurl: 'lnurl1auth...' });
 
       expect(response.status).toBe(200);
       expect(response.body).toEqual({ message: 'OK' });
@@ -186,9 +168,7 @@ describe('LNURL Routes', () => {
     it('should return 500 on LNURL auth failure', async () => {
       mockPhoenixd.lnurlAuth.mockRejectedValueOnce(new Error('Authentication failed'));
 
-      const response = await request(app)
-        .post('/api/lnurl/auth')
-        .send({ lnurl: 'invalid-auth' });
+      const response = await request(app).post('/api/lnurl/auth').send({ lnurl: 'invalid-auth' });
 
       expect(response.status).toBe(500);
       expect(response.body.error).toBe('Authentication failed');
@@ -197,9 +177,7 @@ describe('LNURL Routes', () => {
     it('should handle malformed LNURL auth', async () => {
       mockPhoenixd.lnurlAuth.mockRejectedValueOnce(new Error('Malformed LNURL'));
 
-      const response = await request(app)
-        .post('/api/lnurl/auth')
-        .send({ lnurl: 'not-a-lnurl' });
+      const response = await request(app).post('/api/lnurl/auth').send({ lnurl: 'not-a-lnurl' });
 
       expect(response.status).toBe(500);
     });
