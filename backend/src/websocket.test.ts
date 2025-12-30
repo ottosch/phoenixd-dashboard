@@ -191,7 +191,7 @@ describe('WebSocket Utilities', () => {
       const baseDelay = 5000;
       let reconnectAttempts = 0;
 
-      const getReconnectDelay = () => baseDelay;
+      const getReconnectDelay = () => baseDelay * (reconnectAttempts > 0 ? 1 : 1);
 
       expect(getReconnectDelay()).toBe(5000);
 

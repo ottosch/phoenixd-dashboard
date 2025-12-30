@@ -50,12 +50,15 @@ class MockWebSocket {
 let mockWebSocketInstances: MockWebSocket[] = [];
 
 // Mock global WebSocket
-vi.stubGlobal('WebSocket', class extends MockWebSocket {
-  constructor(url: string) {
-    super(url);
-    mockWebSocketInstances.push(this);
+vi.stubGlobal(
+  'WebSocket',
+  class extends MockWebSocket {
+    constructor(url: string) {
+      super(url);
+      mockWebSocketInstances.push(this);
+    }
   }
-});
+);
 
 describe('useWebSocket Hook', () => {
   let consoleLogSpy: ReturnType<typeof vi.spyOn>;
