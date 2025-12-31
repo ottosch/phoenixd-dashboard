@@ -71,7 +71,7 @@ describe('Receive Page', () => {
       // Click the copy button
       cy.contains('button', 'Copy Invoice').click();
 
-      // After clicking, either the button text changes to "Copied!" 
+      // After clicking, either the button text changes to "Copied!"
       // or a toast appears - both contain "Copied" text
       // Use longer timeout to account for async clipboard operations
       cy.contains('Copied', { timeout: 5000 }).should('be.visible');
