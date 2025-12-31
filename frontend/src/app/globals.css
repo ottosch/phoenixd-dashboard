@@ -605,3 +605,10 @@
 .animate-slide-up {
   animation: none;
 }
+
+/* Password input masking - same as lock-screen */
+.password-masked {
+  -webkit-text-security: disc;
+  -moz-text-security: disc;
+  text-security: disc;
+}

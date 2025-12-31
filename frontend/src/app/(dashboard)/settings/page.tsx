@@ -366,11 +366,26 @@ export default function SettingsPage() {
                   {(passwordAction === 'change' || passwordAction === 'remove') && (
                     <div className="relative">
                       <input
-                        type={showCurrentPassword ? 'text' : 'password'}
+                        type="text"
                         value={currentPassword}
                         onChange={(e) => setCurrentPassword(e.target.value)}
                         placeholder="Current password"
-                        className="w-full px-4 py-2.5 pr-10 rounded-lg bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 focus:outline-none focus:ring-2 focus:ring-primary/50"
+                        className={cn(
+                          'w-full px-4 py-2.5 pr-10 rounded-lg bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 focus:outline-none focus:ring-2 focus:ring-primary/50',
+                          !showCurrentPassword && 'password-masked'
+                        )}
+                        name="search_query"
+                        id="settings_field_0"
+                        autoComplete="off"
+                        autoCorrect="off"
+                        autoCapitalize="off"
+                        spellCheck={false}
+                        data-form-type="other"
+                        data-lpignore="true"
+                        data-1p-ignore="true"
+                        data-bwignore="true"
+                        aria-autocomplete="none"
+                        inputMode="numeric"
                       />
                       <button
                         type="button"
@@ -391,11 +406,26 @@ export default function SettingsPage() {
                     <>
                       <div className="relative">
                         <input
-                          type={showNewPassword ? 'text' : 'password'}
+                          type="text"
                           value={newPassword}
                           onChange={(e) => setNewPassword(e.target.value)}
                           placeholder="New password"
-                          className="w-full px-4 py-2.5 pr-10 rounded-lg bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 focus:outline-none focus:ring-2 focus:ring-primary/50"
+                          className={cn(
+                            'w-full px-4 py-2.5 pr-10 rounded-lg bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 focus:outline-none focus:ring-2 focus:ring-primary/50',
+                            !showNewPassword && 'password-masked'
+                          )}
+                          name="search_query"
+                          id="settings_field_1"
+                          autoComplete="off"
+                          autoCorrect="off"
+                          autoCapitalize="off"
+                          spellCheck={false}
+                          data-form-type="other"
+                          data-lpignore="true"
+                          data-1p-ignore="true"
+                          data-bwignore="true"
+                          aria-autocomplete="none"
+                          inputMode="numeric"
                         />
                         <button
                           type="button"
@@ -410,11 +440,26 @@ export default function SettingsPage() {
                         </button>
                       </div>
                       <input
-                        type={showNewPassword ? 'text' : 'password'}
+                        type="text"
                         value={confirmPassword}
                         onChange={(e) => setConfirmPassword(e.target.value)}
                         placeholder="Confirm password"
-                        className="w-full px-4 py-2.5 rounded-lg bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 focus:outline-none focus:ring-2 focus:ring-primary/50"
+                        className={cn(
+                          'w-full px-4 py-2.5 rounded-lg bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 focus:outline-none focus:ring-2 focus:ring-primary/50',
+                          !showNewPassword && 'password-masked'
+                        )}
+                        name="search_query"
+                        id="settings_field_2"
+                        autoComplete="off"
+                        autoCorrect="off"
+                        autoCapitalize="off"
+                        spellCheck={false}
+                        data-form-type="other"
+                        data-lpignore="true"
+                        data-1p-ignore="true"
+                        data-bwignore="true"
+                        aria-autocomplete="none"
+                        inputMode="numeric"
                       />
                     </>
                   )}
@@ -627,12 +672,26 @@ export default function SettingsPage() {
                     </p>
                     <div className="relative">
                       <input
-                        type={showSeedPassword ? 'text' : 'password'}
+                        type="text"
                         value={seedPassword}
                         onChange={(e) => setSeedPassword(e.target.value)}
                         placeholder="Enter your password"
-                        className="w-full px-4 py-2.5 pr-10 rounded-lg bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 focus:outline-none focus:ring-2 focus:ring-primary/50"
+                        className={cn(
+                          'w-full px-4 py-2.5 pr-10 rounded-lg bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 focus:outline-none focus:ring-2 focus:ring-primary/50',
+                          !showSeedPassword && 'password-masked'
+                        )}
+                        name="search_query"
+                        id="settings_field_3"
                         autoComplete="off"
+                        autoCorrect="off"
+                        autoCapitalize="off"
+                        spellCheck={false}
+                        data-form-type="other"
+                        data-lpignore="true"
+                        data-1p-ignore="true"
+                        data-bwignore="true"
+                        aria-autocomplete="none"
+                        inputMode="numeric"
                       />
                       <button
                         type="button"
