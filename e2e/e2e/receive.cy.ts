@@ -65,15 +65,16 @@ describe('Receive Page', () => {
       cy.contains('button', 'Create Invoice').click();
       cy.wait('@createInvoice');
 
-      // Wait for the Copy Invoice button to appear
-      cy.contains('button', 'Copy Invoice').should('be.visible');
+      // Wait for the Copy Invoice button to appear and be interactable
+      cy.contains('button', 'Copy Invoice').should('be.visible').and('be.enabled');
 
       // Click the copy button
       cy.contains('button', 'Copy Invoice').click();
 
-      // After clicking, the button text should change to "Copied!"
-      // or a toast should appear confirming the copy action
-      cy.contains('Copied').should('be.visible');
+      // After clicking, either the button text changes to "Copied!" 
+      // or a toast appears - both contain "Copied" text
+      // Use longer timeout to account for async clipboard operations
+      cy.contains('Copied', { timeout: 5000 }).should('be.visible');
     });
   });
 

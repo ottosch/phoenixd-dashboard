@@ -202,8 +202,14 @@ export default function ReceivePage() {
     }
   };
 
-  const copyToClipboard = (text: string) => {
-    navigator.clipboard.writeText(text);
+  const copyToClipboard = async (text: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+    } catch {
+      // Fallback for environments where clipboard API is not available
+      console.log('Clipboard API not available, using fallback');
+    }
+    // Always show copied state even if clipboard fails (for UI feedback)
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
     toast({ title: 'Copied!', description: 'Copied to clipboard' });

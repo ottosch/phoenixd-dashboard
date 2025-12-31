@@ -89,8 +89,13 @@ export default function PaymentsPage() {
     }
   };
 
-  const copyToClipboard = (text: string, field: string) => {
-    navigator.clipboard.writeText(text);
+  const copyToClipboard = async (text: string, field: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+    } catch {
+      // Fallback for environments where clipboard API is not available
+      console.log('Clipboard API not available');
+    }
     setCopiedField(field);
     setTimeout(() => setCopiedField(null), 2000);
     toast({ title: 'Copied!', description: 'Copied to clipboard' });

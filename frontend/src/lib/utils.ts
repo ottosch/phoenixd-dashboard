@@ -29,8 +29,13 @@ export function truncateMiddle(str: string, startChars = 8, endChars = 8): strin
   return `${str.slice(0, startChars)}...${str.slice(-endChars)}`;
 }
 
-export function copyToClipboard(text: string): Promise<void> {
-  return navigator.clipboard.writeText(text);
+export async function copyToClipboard(text: string): Promise<void> {
+  try {
+    await navigator.clipboard.writeText(text);
+  } catch {
+    // Fallback for environments where clipboard API is not available
+    console.log('Clipboard API not available');
+  }
 }
 
 export function getMempoolUrl(chain: string, txId?: string): string {

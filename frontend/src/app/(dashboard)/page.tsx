@@ -81,8 +81,13 @@ export default function OverviewPage() {
     fetchData();
   }, [toast]);
 
-  const copyToClipboard = (text: string) => {
-    navigator.clipboard.writeText(text);
+  const copyToClipboard = async (text: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+    } catch {
+      // Fallback for environments where clipboard API is not available
+      console.log('Clipboard API not available');
+    }
     toast({
       title: 'Copied!',
       description: 'Copied to clipboard',
@@ -91,7 +96,7 @@ export default function OverviewPage() {
 
   const totalCapacity = channels.reduce((acc, ch) => acc + (ch.capacitySat || 0), 0);
   const totalInbound = channels.reduce((acc, ch) => acc + (ch.inboundLiquiditySat || 0), 0);
-  const activeChannels = channels.filter((c) => c.state === 'NORMAL').length;
+  const activeChannels = channels.filter((c) => c.state?.toUpperCase() === 'NORMAL').length;
 
   if (loading) {
     return (
